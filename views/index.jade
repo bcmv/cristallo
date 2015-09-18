@@ -1,0 +1,71 @@
+extends layout
+
+block content
+	section.row
+		section.col-md-12
+			div#carousel.carousel.slide(data-ride="carousel")
+				div.carousel-inner#content
+					-each article,k in slides
+						div.item(class=(k==0 ? "active" : ""), id=article._id)
+							div.row
+								div.col-md-5(style='height:400px; background:#FF7000')
+									section(style='padding:10px')
+										h1(style='color:white; font-weight: bolder;')=article.name
+										br
+										h4(style='color:white; font-weight: bolder;')=article.description
+										
+								div.col-md-7(style='height:400px;padding-left:0;background:url(/files/'+article.image+') no-repeat;background-size: cover;')
+									//img(src="/files/" + article.image).img-responsive
+
+				a.left.carousel-control(href="#carousel", data-slide="prev").hide
+					span.glyphicon.glyphicon-chevron-left
+				a.right.carousel-control(href="#carousel", data-slide="next").hide
+					span.glyphicon.glyphicon-chevron-right
+			br
+		hr
+	section.row
+		section.col-md-12
+			-each article,k in slides
+				section.col-md-3
+					section.row.carousel-mover(id="subitem_" + article._id, class=(k==0 ? "active" : ""), data-index=k, style='background:url(/files/'+article.image+') no-repeat;background-size: cover;')
+						h4=article.name
+	section.row
+		section#welcome
+			h1.big-heading Welcome to Platinum Cristallo Holdings
+			p "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			br
+	hr
+	section
+		section.row
+			section.col-md-4
+				h3 Services
+				-each item in services
+					a(href='#')
+						-if(!item.name) item.name = ""
+						h4 #{item.name}
+						-var fimg = item.image;
+						section(style='height: 170px;background:url(/files/medium'+fimg+') no-repeat;background-size: cover;')
+						//img(src='/files/medium' + fimg);
+				a(href='/projects') View more
+			section.col-md-4
+				h3 Portfolio
+				-if(project)
+					h5=project.name
+					img(src='/files/' + project.images[0]).img-responsive
+					p
+						| #{project.description}
+						span &nbsp;
+						a(href='/news/' + project._id) Read more
+			section.col-md-4
+				h3 Reach us
+				h5 On Facebook
+				div(class="fb-page", data-href="https://www.facebook.com/facebook",  data-hide-cover="false", data-show-facepile="false", data-show-posts="false")
+				h5 Call us
+				p
+					strong Tel: 
+					small +960 333-3333
+						
+				p
+					strong Email: 
+					small sales@platinumcristalloholdings.com
+						

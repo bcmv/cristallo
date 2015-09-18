@@ -1,0 +1,29 @@
+div.carousel-inner#content
+	-if(selected == "contact")
+		include contact
+	-else if(selected == "about")
+		include about
+	-else
+		-each slide, k in selected_data
+			include products
+//
+	a.left.carousel-control(href="#carousel", data-slide="prev")
+		span.glyphicon.glyphicon-chevron-left
+	a.right.carousel-control(href="#carousel", data-slide="next")
+		span.glyphicon.glyphicon-chevron-right
+				
+section#stuff
+	h4
+		a(href='/', class=(selected == "home" ? "current-url" : "")) HOME
+	h4
+		a(href='/products', class=(selected == "products" ? "current-url" : "")) PRODUCTS
+	h4
+		a(href='/services', class=(selected == "services" ? "current-url" : "")) SERVICES
+	h4
+		a(href='/contact', class=(selected == "contact" ? "current-url" : "")).contact-menu CONTACT US
+	h4
+		a(href='/about', class=(selected == "about" ? "current-url" : "")) ABOUT US
+section#submenu
+	-if(selected.match(/contact|about/) == null)
+		-each slide, index in selected_data
+			h4(data-index=index, data-type=selected, data-id=slide._id)=slide.name

@@ -1,0 +1,40 @@
+//
+	div.Flexible-container
+		iframe(src="https://maps.google.com/?ie=UTF8&ll=4.177188,73.516393&spn=0.004569,0.004474&t=m&z=18&source=embed&output=embed", width="1170", height="550", frameborder="0", style="border:0")
+.carousel-box.Flexible-container
+	.carousel-box-contents	
+		h2 Feel free to contact us
+		.row
+			.col-md-6
+				h3 Address
+				address
+					strong Pool Chemicals & Services Maldives Pvt. Ltd
+					br
+					| H. Gasdhoshugey Aage, Abdhahfehimagu
+					br
+					| Male', Republic of Maldives
+					br
+					br
+					| Tel: +960 330 1811
+					br
+					| Fax: +960 330 2822
+					br
+					| Email: sales@poolchemicals.com.mv
+				.Flexible-container
+					iframe(src="https://maps.google.com/?ie=UTF8&ll=4.177188,73.516393&spn=0.004569,0.004474&t=m&z=18&source=embed&output=embed", width="1170", height="550", frameborder="0", style="border:0")
+			.col-md-5
+				h3#contact-status Send a message / Request a quote
+				form.form-horizontal(role='form',  parsley-validate)#new-message-form
+					section.form-group
+						section.col-sm-11
+							input.form-control(type='text', placeholder='Name', required)#contact_name
+					section.form-group
+						section.col-sm-11
+							input.form-control(type='text', placeholder='Email or Phone number', required)#contact_num_email
+					section.form-group
+						section.col-sm-11
+							textarea.form-control(placeholder='Your message or quote', required, rows="5")#contact_message
+					section.form-group
+						section.col-sm-11
+							input(type='submit', value='Send').btn.btn-primary
+					

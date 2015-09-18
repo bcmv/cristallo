@@ -1,0 +1,19 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.6",
+    "jade": "*",
+    "stylus": "~0.41.3",
+    "underscore": "~1.5.2",
+    "underscore.string": "~2.3.3",
+    "moment": "~2.4.0",
+    "jade-browser": "0.0.14",
+    "connect-mongo": "~0.4.0",
+    "async": "~0.2.9"
+  }
+}

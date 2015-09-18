@@ -1,0 +1,20 @@
+extends layout
+
+block content
+	style .affix {    position: fixed;    top: 20px;    width: 260px;}
+	hr
+	section.row
+		section.col-md-3.navbar-app
+			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
+				ul.nav.nav-pills.nav-stacked
+					-each item,k in affix
+						li(class=(k==0?"active":""))
+							a(href="#" + item._id)=item.name
+		section.col-md-6
+			-each item in affix
+				div(id=item._id).affix-item
+					h2=item.name
+					-if(item.image)
+						img.img-rounded.img-responsive(src="/files/" + item.image)
+					p!=item.article
+		include components/rightside

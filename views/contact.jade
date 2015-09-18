@@ -1,0 +1,34 @@
+extends layout
+
+block content
+	style .affix {    position: fixed;    top: 20px;    width: 260px;}
+	hr
+	section.row
+		section.col-md-3.navbar-app
+			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
+				ul.nav.nav-pills.nav-stacked
+					li.active
+						a(href="#address") Contact Us
+					li
+						a(href="#reach-online") Reach Online
+		section.col-md-6
+			div(id="address").affix-item
+				h2 Contact Us
+				p!=administration.contact
+			div(id="reach-online").affix-item
+				h2 Reach Online
+				form.form-horizontal(role='form',  parsley-validate)#new-message-form
+					section.form-group
+						section.col-sm-11
+							input.form-control(type='text', placeholder='Name', required)#contact_name
+					section.form-group
+						section.col-sm-11
+							input.form-control(type='text', placeholder='Email or Phone number', required)#contact_num_email
+					section.form-group
+						section.col-sm-11
+							textarea.form-control(placeholder='Your message or quote', required, rows="5")#contact_message
+					section.form-group
+						section.col-sm-11
+							input(type='submit', value='Send').btn.btn-primary
+									
+		include components/rightside

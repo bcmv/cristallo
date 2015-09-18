@@ -1,0 +1,37 @@
+extends layout
+
+block content
+	style .affix {    position: fixed;    top: 20px;    width: 260px;}
+	hr
+	section.row
+		section.col-md-3.navbar-app
+			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
+				ul.nav.nav-pills.nav-stacked
+					li.active
+						a(href="#forms") Forms
+					li
+						a(href="#announcements") Announcements & Newsletters
+		section.col-md-6
+			div(id="forms").affix-item
+				h2 Forms
+				ul
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+			div(id="announcements").affix-item
+				h2 Announcements & Newsletters									
+				ul
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+					li
+						a(href='/') Membership Registration Form
+		include components/rightside

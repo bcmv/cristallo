@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	style .affix {    position: fixed;    top: 20px;    width: 260px;}
+	hr
+	section.row
+		section.col-md-3.navbar-app
+			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
+				div.fb-like(data-layout="button_count", data-action="like", data-show-faces="false", data-share="false")
+				a(href="https://twitter.com/share", class="twitter-share-button", data-via="maldives", data-size="large") Tweet
+				script !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+				section.archive
+					h4 Archive
+					-for(var i in archive)
+						h4=i
+						ul.nav.nav-pills
+							-each item in archive[i]
+								li
+									a(href='/gallery/' + item._id)=item.name
+		section.col-md-6
+			div(id=item._id).affix-item
+				h2=item.name
+				p
+					-var date = new Date(parseInt(item._id.toString().slice(0,8), 16)*1000);
+					small=date
+				-if(item.image)
+					img.img-rounded.img-responsive(src="/files/" + item.image)
+				-each img in item.images
+					section
+						img(src='/files/' + img).img-responsive.img-thumbnail
+						br
+			div#fb-comment-container.span7
+				h4 Comments
+				script(type='text/javascript').
+					(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=312876022197325&version=v2.0";
+					fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
+				div.fb-comments(data-numposts="5", data-colorscheme="light", data-href="http://www.maldivianinsider.com/gallery/" + item._id)
+		include components/rightside
