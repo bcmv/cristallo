@@ -110,6 +110,32 @@ cms.add('website_services',{
 		}		
 	}
 });
+cms.add('website_subservices',{
+	fields:{
+		name:{type:"string"},
+		parent:{type:'select', source:'website_services.name'},
+		description:{type:'string', multi:true},
+		article:{type:'string', multi:true, rtl:true},
+		image:{
+			type:'image', 
+			maintain_ratio:false,   
+			crop_width:680, 
+			crop_height:400, 
+			sizes:[
+				{
+					prefix:"medium", 
+					width:240, 
+					height:180,
+				}, 
+				{
+					prefix:"mediumbig", 
+					width:370, 
+					height:370
+				}
+			]
+		}		
+	}
+});
 
 cms.add('website_slides',{
 	fields:{
@@ -325,10 +351,38 @@ app.get('/services', function(req, res){
 	.find()
 	.lean()
 	.exec(function(err, data){
-		res.render('services',{affix:data});
+		cms
+		.website_subservices
+		.find()
+		.lean()
+		.exec(function(err, subs){
+			data = data.map(function(d){
+				d.subservices = [];
+				d.subservices = subs.filter(function(s){return s.parent.name == d.name});
+				return d;
+			})
+			console.log(data);
+			res.render('services',{affix:data});
+		});
+
 	});
+});
+app.get('/service/:id', function(req, res){
+	cms
+	.website_services
+	.findOne({_id:req.params.id})
+	.lean()
+	.exec(function(err, data){
+		cms
+		.website_subservices
+		.find({"parent.name":data.name})
+		.lean()
+		.exec(function(err, subs){
+			console.log(subs)
+			res.render('subservices',{affix:subs, service:data});
+		});
 
-
+	});
 });
 app.get('/news', function(req, res){
 	cms

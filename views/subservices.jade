@@ -3,6 +3,10 @@ extends layout
 block content
 	style .affix {    position: fixed;    top: 20px;    width: 260px;}
 	hr
+	h1
+		a(href='/services', style='color:black') Services &raquo; 
+		| #{service.name}
+	br
 	section.row
 		section.col-md-3.navbar-app
 			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
@@ -12,17 +16,10 @@ block content
 							a(href="#" + item._id)=item.name
 		section.col-md-6
 			-each item in affix
-				-var url = item.subservices.length ? '/service' + item._id : "#"
-				a(id=item._id, href=url).affix-item
+				div(id=item._id).affix-item
 					h2
-						-if(item.subservices.length)
-							a(href='/service/' + item._id)=item.name
-						-else
-							span=item.name
+						span=item.name
 					-if(item.image)
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.description
-					-each sub in item.subservices
-						h3
-							a(href='/service/' + item._id)=sub.name
 		include components/rightside
