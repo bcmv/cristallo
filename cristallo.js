@@ -59,32 +59,6 @@ cms.add('website_about',{
 		}		
 	}
 });
-
-cms.add('website_news',{
-	fields:{
-		name:{type:"string"},
-		description:{type:'string', multi:true},
-		article:{type:'string', multi:true, rtl:true},
-		image:{
-			type:'image', 
-			maintain_ratio:false,   
-			crop_width:680, 
-			crop_height:400, 
-			sizes:[
-				{
-					prefix:"medium", 
-					width:240, 
-					height:180,
-				}, 
-				{
-					prefix:"mediumbig", 
-					width:370, 
-					height:370
-				}
-			]
-		}		
-	}
-});
 cms.add('website_services',{
 	fields:{
 		name:{type:"string"},
@@ -188,24 +162,6 @@ cms.add('website_projects',{
 	}
 });
 
-
-cms.add('downloads_forms',{
-	fields:{
-		name:{type:"string"},
-		file:{type:'file'},
-		description:{type:'string', multi:'true'}	
-	}
-});
-
-cms.add('downloads_announcements',{
-	fields:{
-		name:{type:"string"},
-		file:{type:'file'},
-		description:{type:'string', multi:'true'}	
-	}
-});
-
-
 cms.add('subscription_list',{
 	single:true,
 	readonly:true,
@@ -277,24 +233,6 @@ app.get('/', function(req, res){
 				.lean()
 				.exec(fn);	
 			},
-			news:function(fn){
-				cms
-				.website_news
-				.find()
-				.sort({_id:-1})
-				.limit(4)
-				.lean()
-				.exec(function(err, articles){
-					if(err) return fn(err);
-					articles = _.map(articles, function(article){
-						//TODO: t
-						//extract time from objectid
-						
-						return article;
-					});
-					fn(null,articles);
-				});	
-			},
 			slides:function(fn){
 				cms
 				.website_slides
@@ -332,13 +270,6 @@ app.get('/', function(req, res){
 				.exec(function(err, d){
 					fn(null, d[~~(Math.random()*d.length)]);
 				});	
-			},
-			top_news:function(fn){
-				cms.website_news
-				.findOne()
-				.sort({views:-1})
-				.lean()
-				.exec(fn)
 			}
 		},function(err, page){
 			res.render('index',page);
@@ -384,17 +315,6 @@ app.get('/service/:id', function(req, res){
 
 	});
 });
-app.get('/news', function(req, res){
-	cms
-	.website_news
-	.find()
-	.lean()
-	.exec(function(err, data){
-		res.render('news',{affix:data});
-	});
-
-
-});
 app.get('/projects', function(req, res){
 	cms
 	.website_projects
@@ -405,49 +325,18 @@ app.get('/projects', function(req, res){
 	});
 
 });
-app.get('/news/:id', function(req, res){
+app.get('/project/:id', function(req, res){
 	async.auto({
 		item:function(fn){
 			cms
-			.website_news
+			.website_projects
 			.findById(req.params.id)
 			.lean()
 			.exec(fn);
 		},
 		archive:function(fn){
 			cms
-			.website_news
-			.find({},{name:1})
-			.sort({_id:-1})
-			.lean()
-			.exec(function(err, docs){
-				var d = _.map(docs,function(d){
-					d.year = new Date(parseInt(d._id.toString().slice(0,8), 16)*1000).getFullYear();
-				});
-				d = _.groupBy(docs, 'year');
-				fn(null, d);
-			});
-
-		}
-	},function(err, page){
-		res.render('news-item', page);
-	})
-	cms
-	.website_news
-	.update({_id:req.params.id},{$inc:{views:1}},function(err,d){});
-});
-app.get('/gallery/:id', function(req, res){
-	async.auto({
-		item:function(fn){
-			cms
-			.website_gallery
-			.findById(req.params.id)
-			.lean()
-			.exec(fn);
-		},
-		archive:function(fn){
-			cms
-			.website_gallery
+			.website_projects
 			.find({},{name:1})
 			.sort({_id:-1})
 			.lean()
@@ -464,9 +353,6 @@ app.get('/gallery/:id', function(req, res){
 		res.render('gallery-item', page);
 	})
 
-});
-app.get('/downloads', function(req, res){
-	res.render('downloads');
 });
 app.get('/contact', function(req, res){
 	cms
