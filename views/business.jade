@@ -5,8 +5,7 @@ block content
 	hr
 	h1
 		a(href='/businesses', style='color:black') Businesses &raquo; 
-		| #{business} &raquo; 
-		| #{service.name}
+		| #{business.name}
 	br
 	section.row
 		section.col-md-3.navbar-app
@@ -18,16 +17,17 @@ block content
 		section.col-md-6
 			-each item in affix
 				div(id=item._id).affix-item
-					h2
-						span=item.name
+					a(href=item.slug)
+						h2
+							span=item.name
 					-if(item.image)
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.description
-		section.col-md-3
-			h3 Related Projects
-			-each project in projects
-				section.project
-					a(href='/project/' + project._id)
-						h5: strong=project.name
-						img.img-responsive(src='/files/'+project.images[0])
-					hr
+					-if(item.projects.length)
+						section
+							h5.related-projects Related projects 
+								-each project in item.projects
+									i
+										a(href='/project/'+project._id) #{project.name}
+										span &nbsp;
+		include components/rightside

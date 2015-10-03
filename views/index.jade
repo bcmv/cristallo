@@ -8,13 +8,13 @@ block content
 					-each article,k in slides
 						div.item(class=(k==0 ? "active" : ""), id=article._id)
 							div.row
-								div.col-md-5(style='height:400px; background:#FF7000')
-									section(style='padding:10px')
-										h1(style='color:white; font-weight: bolder;')=article.name
-										br
-										h4(style='color:white; font-weight: bolder;')=article.description
 										
-								div.col-md-7(style='height:400px;padding-left:0;background:url(/files/'+article.image+') no-repeat;background-size: cover;')
+								div.col-md-12(style='position:relative;height:450px;padding-left:0;background:url(/files/'+article.image+') no-repeat;background-size: cover;')
+									div.slide-bottom
+										section(style='padding:10px')
+											h1(style='color:white; font-weight: bolder;')=article.name
+											br
+											h4(style='color:white; font-weight: bolder;')=article.description
 									//img(src="/files/" + article.image).img-responsive
 
 				a.left.carousel-control(href="#carousel", data-slide="prev").hide

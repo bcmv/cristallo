@@ -59,9 +59,35 @@ cms.add('website_about',{
 		}		
 	}
 });
+cms.add('website_businesses',{
+	fields:{
+		name:{type:"string"},
+		description:{type:'string', multi:true},
+		article:{type:'string', multi:true, rtl:true},
+		image:{
+			type:'image', 
+			maintain_ratio:false,   
+			crop_width:680, 
+			crop_height:400, 
+			sizes:[
+				{
+					prefix:"medium", 
+					width:240, 
+					height:180,
+				}, 
+				{
+					prefix:"mediumbig", 
+					width:370, 
+					height:370
+				}
+			]
+		}		
+	}
+});
 cms.add('website_services',{
 	fields:{
 		name:{type:"string"},
+		parent:{type:'select', source:'website_businesses.name'},
 		description:{type:'string', multi:true},
 		article:{type:'string', multi:true, rtl:true},
 		image:{
@@ -139,6 +165,7 @@ cms.add('website_slides',{
 cms.add('website_projects',{
 	fields:{
 		name:{type:"string"},
+		service:{type:'select', source:'website_services.name'},
 		description:{type:'string', multi:true},
 		images:{
 			type:'images', 
@@ -276,6 +303,81 @@ app.get('/', function(req, res){
 		});
 	}
 });
+app.get('/businesses', function(req, res){
+	cms
+	.website_businesses
+	.find()
+	.lean()
+	.exec(function(err, data){
+		cms
+		.website_services
+		.find()
+		.lean()
+		.exec(function(err, subs){
+			data = data.map(function(d){
+				d.slug = _.str.slugify(d.name);
+				d.services = [];
+				d.services = subs.filter(function(s){return s.parent.name == d.name});
+				return d;
+			})
+			console.log(data);
+			res.render('businesses',{affix:data});
+		});
+
+	});
+});
+app.get('/business/:slug', function(req, res){
+	var name = req.params.slug;
+	name = name.replace(/-/g, " ");
+	name = new RegExp(name, "i");
+	var data;
+	var subs;
+	async.waterfall([
+		function(fn){
+			cms
+			.website_businesses
+			.findOne({name:name})
+			.lean()
+			.exec(fn);
+		},
+		function (d, fn){
+			data = d;
+			cms
+			.website_services
+			.find({"parent.name":data.name})
+			.lean()
+			.exec(fn);	
+		},
+		function (sub, fn){
+			subs = sub.map(function(s){
+				s.slug = req.params.slug + "/" + _.str.slugify(s.name);
+				return s;
+			});
+			fn();
+		},
+		function(fn){
+			cms
+			.website_projects
+			.find()
+			.lean()
+			.exec(function(err, p){
+				p.forEach(function(p){
+					subs.forEach(function(s,i){
+						subs[i].projects = subs[i].projects || [];
+						if(p.service && p.service.name == s.name){
+							subs[i].projects.push(p);
+						}
+					})
+				})
+				fn();
+			});	
+		}
+	], function(){
+		console.log(subs)
+		res.render('business',{affix:subs, business:data});		
+	});
+});
+
 app.get('/services', function(req, res){
 	cms
 	.website_services
@@ -298,10 +400,18 @@ app.get('/services', function(req, res){
 
 	});
 });
-app.get('/service/:id', function(req, res){
+app.get('/business/:business/:slug', function(req, res){
+	var business = req.params.business;
+	business = business.replace(/-/g, " ");
+	business = _.str.capitalize(business)
+
+	var name = req.params.slug;
+	name = name.replace(/-/g, " ");
+	name = new RegExp(name, "i");
+
 	cms
 	.website_services
-	.findOne({_id:req.params.id})
+	.findOne({name:name})
 	.lean()
 	.exec(function(err, data){
 		cms
@@ -309,8 +419,13 @@ app.get('/service/:id', function(req, res){
 		.find({"parent.name":data.name})
 		.lean()
 		.exec(function(err, subs){
-			console.log(subs)
-			res.render('subservices',{affix:subs, service:data});
+			cms
+			.website_projects
+			.find({'service.name':name})
+			.lean()
+			.exec(function(err, projects){
+				res.render('subservices',{affix:subs, service:data, business:business, projects:projects});
+			})
 		});
 
 	});

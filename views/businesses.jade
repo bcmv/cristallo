@@ -3,11 +3,6 @@ extends layout
 block content
 	style .affix {    position: fixed;    top: 20px;    width: 260px;}
 	hr
-	h1
-		a(href='/businesses', style='color:black') Businesses &raquo; 
-		| #{business} &raquo; 
-		| #{service.name}
-	br
 	section.row
 		section.col-md-3.navbar-app
 			div(role='complementary', data-spy="affix", data-offset-top="200", data-offset-bottom="200")
@@ -17,17 +12,17 @@ block content
 							a(href="#" + item._id)=item.name
 		section.col-md-6
 			-each item in affix
-				div(id=item._id).affix-item
+				-var url = item.services.length ? '/business' + item._id : "#"
+				a(id=item._id, href=url).affix-item
 					h2
-						span=item.name
+						-if(item.services.length)
+							a(href='/business/' + item.slug)=item.name
+						-else
+							span=item.name
 					-if(item.image)
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.description
-		section.col-md-3
-			h3 Related Projects
-			-each project in projects
-				section.project
-					a(href='/project/' + project._id)
-						h5: strong=project.name
-						img.img-responsive(src='/files/'+project.images[0])
-					hr
+					-each sub in item.services
+						h3
+							a(href='/business/' + item.slug)=sub.name
+		include components/rightside
