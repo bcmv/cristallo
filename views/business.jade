@@ -27,7 +27,5 @@ block content
 						section
 							h5.related-projects Related projects 
 								-each project in item.projects
-									i
-										a(href='/project/'+project._id) #{project.name}
-										span &nbsp;
-		include components/rightside
+									a(href='/project/'+project._id).btn.btn-default #{project.name}
+									span &nbsp;

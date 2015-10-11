@@ -27,5 +27,4 @@ block content
 						blockquote
 							-each sub in item.services
 								h5
-									a(href='/business/' + item.slug)=sub.name
-		include components/rightside
+									span(href='/business/' + item.slug)=sub.name

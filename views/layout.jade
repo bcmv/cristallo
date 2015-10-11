@@ -10,6 +10,7 @@ html
 		script(src='/js/html5Preloader.js')
 		script(src='/javascripts/davis.min.js')
 		script(src='/js/bootstrap.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.0.10/bootstrap-hover-dropdown.min.js')
 		script(src='/js/parsley.js')
 		script(src='/templates.js')
 		script(src='/js/pre.js')
@@ -37,8 +38,19 @@ html
 									a(href='/') HOME
 								li
 									a(href='/about-us') ABOUT US
-								li
-									a(href='/businesses') BUSINESSES
+								li(style='position:relative').dropdown
+									a(href='/businesses', data-hover="dropdown").dropdown-toggle BUSINESSES
+									ul.dropdown-menu.il-list
+										li
+											a(href='/business/cristallo-commercial-diving') Cristallo Commercial Diving
+										li
+											a(href='/business/cristallo-costal-protection') Cristallo Costal Protection
+										li
+											a(href='/business/cristallo-exports') Cristallo Exports
+										li
+											a(href='/business/cristallo-supply') Cristallo Supply
+
+
 								li
 									a(href='/contact') CONTACT US
 			block content
