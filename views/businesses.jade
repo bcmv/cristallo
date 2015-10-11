@@ -23,8 +23,9 @@ block content
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.description
 					if(item.services.length)
-						h4 Services 
-						blockquote
-							-each sub in item.services
-								h5
-									span(href='/business/' + item.slug)=sub.name
+						//	
+							h4 Services 
+							blockquote
+								-each sub in item.services
+									h5
+										span(href='/business/' + item.slug)=sub.name
