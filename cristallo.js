@@ -59,6 +59,16 @@ cms.add('website_about',{
 		}		
 	}
 });
+cms.add('website_aboutslides',{
+	fields:{
+		image:{
+			type:'image', 
+			maintain_ratio:false,   
+			crop_width:555, 
+			crop_height:261
+		}		
+	}
+});
 cms.add('website_businesses',{
 	fields:{
 		name:{type:"string"},
@@ -485,7 +495,13 @@ app.get('/about-us', function(req, res){
 	.find()
 	.lean()
 	.exec(function(err, data){
-		res.render('about',{affix:data});
+		cms
+		.website_aboutslides
+		.find()
+		.lean()
+		.exec(function(err, carousel){
+			res.render('about',{affix:data, carousel:carousel});
+		});
 	});
 });
 

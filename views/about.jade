@@ -11,10 +11,29 @@ block content
 						li(class=(k==0?"active":""))
 							a(href="#" + item._id)=item.name
 		section.col-md-6
+			div#about-us-slides.carousel.slide(data-ride="carousel")
+				ol.carousel-indicators
+					-each item,i in carousel
+						-if(i==0)
+							li(data-target="#about-us-slides", data-slide-to=i).active
+						-else
+							li(data-target="#about-us-slides", data-slide-to=i)
+				div.carousel-inner(role='listbox')
+					-each item,i in carousel
+						div(class=(i==0 ? "item active" : "item"))
+							img(src='/files/'+item.image)
+				a.left.carousel-control(href="#about-us-slides.carousel", role="button", data-slide="prev")
+					span.glyphicon.glyphicon-chevron-left
+					span.sr-only Previous
+				a.right.carousel-control(href="#about-us-slides.carousel", role="button", data-slide="next")
+					span.glyphicon.glyphicon-chevron-right
+					span.sr-only Next
+
+
+
 			-each item in affix
 				div(id=item._id).affix-item
 					h2=item.name
 					-if(item.image)
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.article
-		include components/rightside
