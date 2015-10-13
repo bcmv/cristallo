@@ -17,9 +17,8 @@ block content
 		section.col-md-6
 			-each item in affix
 				div(id=item._id).affix-item
-					a(href=item.slug)
-						h2
-							span=item.name
+					h2
+						span=item.name
 					-if(item.image)
 						img.img-rounded.img-responsive(src="/files/" + item.image)
 					p!=item.description
@@ -29,3 +28,13 @@ block content
 								-each project in item.projects
 									a(href='/project/'+project._id).btn.btn-default #{project.name}
 									span &nbsp;
+		section.col-md-3
+			h3 Related Projects
+			-each item in affix
+				-if(item.projects.length)
+					-each project in item.projects
+						section.project
+							a(href='/project/' + project._id)
+								h5: strong=project.name
+								img.img-responsive(src='/files/'+project.images[0])
+							hr
