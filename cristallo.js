@@ -475,7 +475,7 @@ app.get('/project/:id', function(req, res){
 
 		}
 	},function(err, page){
-		res.render('gallery-item', page);
+		res.render('project-item', page);
 	})
 
 });
