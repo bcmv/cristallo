@@ -10,22 +10,16 @@ block content
 					-each item,k in affix
 						li(class=(k==0?"active":""))
 							a(href="#" + item._id)=item.name
-		section.col-md-6
-			-each item in affix
-				-var url = item.services.length ? '/business' + item._id : "#"
-				a(id=item._id, href=url).affix-item
-					h2
-						-if(item.services.length)
-							a(href='/business/' + item.slug)=item.name
-						-else
-							span=item.name
-					-if(item.image)
-						img.img-rounded.img-responsive(src="/files/" + item.image)
-					p!=item.description
-					if(item.services.length)
-						//	
-							h4 Services 
-							blockquote
-								-each sub in item.services
-									h5
-										span(href='/business/' + item.slug)=sub.name
+		section.col-md-9
+			section.row
+				-each item in affix
+					-var url = item.services.length ? '/business' + item._id : "#"
+					section(id=item._id, href=url, style='margin-bottom:10px;height:170px;background:url(/files/'+item.image+')').col-md-6
+						h2
+							-if(item.services.length)
+								a(style='color:white', href='/business/' + item.slug)=item.name
+							-else
+								span(style='color:white')=item.name
+						-if(item.image)
+							//img.img-rounded.img-responsive(src="/files/" + item.image)
+						p!=item.description
