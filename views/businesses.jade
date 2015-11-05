@@ -14,7 +14,7 @@ block content
 			section.row
 				-each item in affix
 					-var url = item.services.length ? '/business' + item._id : "#"
-					section(id=item._id, href=url, style='background-size:cover;margin-bottom:10px;height:170px;background:url(/files/'+item.image+')').col-md-6
+					section(id=item._id, href=url, style='margin-bottom:10px;height:170px;background:url(/files/'+item.image+');background-size:cover;').col-md-6
 						h2
 							-if(item.services.length)
 								a(style='color:white', href='/business/' + item.slug)=item.name
