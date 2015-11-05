@@ -98,6 +98,7 @@ cms.add('website_services',{
 	fields:{
 		name:{type:"string"},
 		parent:{type:'select', source:'website_businesses.name'},
+		order:{type:'select', source:'settings_variables.name'},		
 		description:{type:'string', multi:true},
 		article:{type:'string', multi:true, rtl:true},
 		image:{
@@ -171,7 +172,6 @@ cms.add('website_slides',{
 		}		
 	}
 });
-
 cms.add('website_projects',{
 	fields:{
 		name:{type:"string"},
@@ -199,6 +199,12 @@ cms.add('website_projects',{
 	}
 });
 
+cms.add('settings_variables',{
+	fields:{
+		name:{type:"string"}		
+	}
+});
+
 cms.add('subscription_list',{
 	single:true,
 	readonly:true,
@@ -211,6 +217,7 @@ cms.add('subscription_list',{
 		}
 	}
 });
+
 cms.run(function(){
 	//setup pre requisites
 	cms
@@ -360,9 +367,15 @@ app.get('/business/:slug', function(req, res){
 		},
 		function (sub, fn){
 			subs = sub.map(function(s){
+				if(!s.order){
+					s.order = {name:"1000"};
+				}
 				s.slug = req.params.slug + "/" + _.str.slugify(s.name);
 				return s;
 			});
+			subs.sort(function(a,b){
+				return parseInt(a.order.name) > parseInt(b.order.name);
+			})
 			fn();
 		},
 		function(fn){
@@ -383,7 +396,6 @@ app.get('/business/:slug', function(req, res){
 			});	
 		}
 	], function(){
-		console.log(subs)
 		res.render('business',{affix:subs, business:data});		
 	});
 });
